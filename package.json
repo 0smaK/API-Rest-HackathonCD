@@ -1,0 +1,20 @@
+{
+  "name": "api_rest_mongodb",
+  "version": "1.0.0",
+  "description": "api rest with users model using node.js and mongoDB",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon .",
+    "start": "node ."
+  },
+  "author": "0smak",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.19"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}

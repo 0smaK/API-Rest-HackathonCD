@@ -1,0 +1,14 @@
+'use strict'
+
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+
+const UserSchema = Schema({
+    nombre: String,
+    apellidos: String,
+    username: String,
+    password: String,
+    foto: String  
+})
+
+module.exports = mongoose.model('User', UserSchema)
