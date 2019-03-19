@@ -22,7 +22,7 @@ function getCancion(req, res) {
 function getCancionTitulo(req, res){
     let songTitle = req.params.songTitle
 
-    Music.findOne({titulo: songTitle}, (err, cancion) => {
+    Music.findOne({titulo: new RegExp(songTitle,'i')}, (err, cancion) => {
         if(err) return res.status(500).send({
             message:`Error al realizar la petición: ${err}`
         })
@@ -160,7 +160,6 @@ function updateSong(req, res) {
             cancion: songUpdated
         })
     })
-
 }
 
 function deleteSong(req, res) {
