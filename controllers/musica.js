@@ -28,7 +28,9 @@ function getCanciones(req, res) {
             message: `No existen canciones`
         })
 
-        res.status(200).send({canciones})
+        res.status(200).send({
+            canciones
+        })
     })
 }
 
@@ -54,13 +56,15 @@ function addSong(req, res) {
     })
 }
 
-function updateSong(req,res){
+function updateSong(req, res) {
     let songID = req.params.songId
     let update = req.body
 
-    Music.findOneAndUpdate(songID,update, (err, songUpdated) => {
-        if(err) res.status(500).send({message:`Error al actualizar la canción: ${err}`})
-        
+    Music.findOnersAndUpdate(songID, update, (err, songUpdated) => {
+        if (err) res.status(500).send({
+            message: `Error al actualizar la canción: ${err}`
+        })
+
         res.status(200).send({
             cancion: songUpdated
         })
@@ -68,9 +72,29 @@ function updateSong(req,res){
 
 }
 
+function deleteSong(req, res) {
+    let songID = req.params.songId
+
+    Music.findById(songID, (err, song) => {
+        if (err) return res.status(500).send({
+            message: `Error al borrar la canción ${err}`
+        })
+
+        song.remove(err => {
+            if (err) res.status(500).send({
+                message: `Error al borrar la canción ${err}`
+            })
+            res.status(200).send({
+                message: `La cancion se ha borrado correctamente`
+            })
+        })
+    })
+}
+
 module.exports = {
     getCancion,
     getCanciones,
     addSong,
-    updateSong
+    updateSong,
+    deleteSong
 }

@@ -15,5 +15,6 @@ api.get('/music', musicController.getCanciones)
 api.get('/music/:songId', musicController.getCancion)
 api.post('/music', musicController.addSong)
 api.put('/music/:songId',musicController.updateSong)
+api.delete('/music/:songId',musicController.deleteSong)
 
 module.exports = api
