@@ -2,23 +2,6 @@
 
 const Music = require('../models/musica')
 
-function getCancion(req, res) {
-    let songID = req.params.songId
-
-    Music.findById(songID, (err, cancion) => {
-        if (err) return res.status(500).send({
-            message: `Error al realizar la peticion ${err}`
-        })
-        if (!cancion) return res.status(404).status({
-            message: `no existe esa cancion`
-        })
-
-        res.status(200).send({
-            cancion
-        })
-    })
-}
-
 function getCancionCateg(req, res) {
     let categPosibles = ['id','titulo','artista','year','album','genero']
     let songValue = req.params.songValue
