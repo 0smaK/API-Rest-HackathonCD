@@ -19,96 +19,67 @@ function getCancion(req, res) {
     })
 }
 
-function getCancionTitulo(req, res){
-    let songTitle = req.params.songTitle
+function getCancionCateg(req, res) {
+    let categPosibles = ['id','titulo','artista','year','album','genero']
+    let songValue = req.params.songValue
+    let categ = req.params.songCateg
+    let query = {}
+    query[categ] = songValue
 
-    Music.findOne({titulo: new RegExp(songTitle,'i')}, (err, cancion) => {
-        if(err) return res.status(500).send({
-            message:`Error al realizar la petición: ${err}`
+    if (categ == "titulo") {
+
+
+        Music.findOne(query, (err, cancion) => {
+            if (err) return res.status(500).send({
+                message: `Error al realizar la petición: ${err}`
+            })
+
+            if (!cancion) return res.status(404).send({
+                message: `No existe la canción ${songValue} dentro de ${categ}`
+            })
+
+            res.status(200).send({
+                cancion
+            })
         })
 
-        if(!cancion) return res.status(404).send({
-            message: `No existe la canción ${songTitle}`
+    } else if(categ=="id") {
+        Music.findById(songValue, (err, cancion) => {
+            if (err) return res.status(500).send({
+                message: `Error al realizar la peticion ${err}`
+            })
+            if (!cancion) return res.status(404).status({
+                message: `no existe esa cancion`
+            })
+    
+            res.status(200).send({
+                cancion
+            })
         })
 
-        res.status(200).send({
-            cancion
+    } else if (categPosibles.includes(categ)) {
+
+
+        Music.find(query, (err, canciones) => {
+            if (err) return res.status(500).send({
+                message: `Error al realizar la petición ${err}`
+            })
+
+            if (!canciones) return res.status(404).send({
+                message: `No existe ninguna coincidencia con el artista ${songValue} dentro de ${categ}`
+            })
+
+            res.status(200).send({
+                canciones
+            })
         })
-    })
+    }else{
+        res.status(404).send({
+            message: `El parametro ${categ} no existe, prueba con los siguientes ${categPosibles}`
+        })
+    }
 }
 
-function getCancionesArtista(req,res){
-    let songArtist = req.params.songArtist
-
-    Music.find({artista: songArtist}, (err,canciones) => {
-        if(err) return res.status(500).send({
-            message:`Error al realizar la petición ${err}`
-        })
-
-        if(!canciones) return res.status(404).send({
-            message: `No existe ninguna coincidencia con el artista ${songArtist}`
-        })
-
-        res.status(200).send({
-            canciones
-        })
-    })
-
-}
-
-function getCancionesAlbum(req,res){
-    let songAlbum = req.params.songAlbum
-
-    Music.find({album:songAlbum}, (err, canciones) => {
-        if(err) return res.status(500).send({
-            message: `Error al realizar la peticion ${err}`
-        })
-
-        if(!canciones) return res.status(404).send({
-            message: `No se ha encontrado ninguna coincidencia con el album ${songAlbum}`
-        })
-
-        res.status(200).send({
-            canciones
-        })
-    })
-}
-
-function getCancionesGenero(req,res){
-    let songGenre = req.params.songGenre
-
-    Music.find({genero: songGenre}, (err,canciones) => {
-        if(err) return res.status(500).send({
-            message: `Error al realizar la petición ${err}`
-        })
-
-        if(!canciones) return res.status(404).send({
-            message: `No se ha encontrado ninguna coincidencia con el genero ${songGenre}`
-        })
-
-        res.status(200).send({
-            canciones
-        })
-    })
-}
-
-function getCancionesYear(req,res){
-    let songYear = req.params.songYear
-
-    Music.find({year: songYear}, (err, canciones) => {
-        if(err) return res.status(500).send({
-            message: `Error al realizar la petición ${err}`
-        })
-
-        if(!canciones) return res.status(404).send({
-            message: `No se ha encontrado ninguna coincidencia con el año ${songYear}`
-        })
-
-        res.status(200).send({
-            canciones
-        })
-    })
-}
 
 function getCanciones(req, res) {
     Music.find({}, (err, canciones) => {
@@ -183,11 +154,7 @@ function deleteSong(req, res) {
 
 module.exports = {
     getCancion,
-    getCancionTitulo,
-    getCancionesArtista,
-    getCancionesGenero,
-    getCancionesYear,
-    getCancionesAlbum,    
+    getCancionCateg,
     getCanciones,
     addSong,
     updateSong,
