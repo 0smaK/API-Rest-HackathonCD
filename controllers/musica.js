@@ -105,7 +105,9 @@ function updateSong(req, res) {
     let songID = req.params.songId
     let update = req.body
 
-    Music.findOneAndUpdate(songID, update, (err, songUpdated) => {
+    console.log("id: "+songID)
+
+    Music.findByIdAndUpdate(songID, update, (err, songUpdated) => {
         if (err) res.status(500).send({
             message: `Error al actualizar la canción: ${err}`
         })
