@@ -136,7 +136,6 @@ function deleteSong(req, res) {
 }
 
 module.exports = {
-    getCancion,
     getCancionCateg,
     getCanciones,
     addSong,
