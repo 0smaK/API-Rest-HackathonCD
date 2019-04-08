@@ -10,7 +10,8 @@ const UserSchema = Schema({
     password: {type: String, required: true},
     profilePic: { type: String, default: 'default.png' },
     lastLogin: Date,
-    signUpDate: {type: Date, default: Date.now() }  
+    signUpDate: {type: Date, default: Date.now() },
+    isDeleted: {type:Boolean, default:false}  
 })
 
 module.exports = mongoose.model('User', UserSchema)
